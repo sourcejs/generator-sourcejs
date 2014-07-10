@@ -1,0 +1,35 @@
+{
+  "name": "generator-sourcejs",
+  "version": "0.1.0",
+  "description": "Yeoman generator for SourceJS http://sourcejs.com",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "sourcejs/generator-sourcejs",
+  "author": {
+    "name": "SourceJS",
+    "email": "r@rhr.me",
+    "url": "https://github.com/sourcejs"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "yeoman-generator",
+    "sourcejs"
+  ],
+  "dependencies": {
+    "yeoman-generator": "~0.16.0",
+    "chalk": "~0.4.0",
+    "yosay": "^0.1.0",
+    "rimraf": "~2.2.8"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0"
+  }
+}
