@@ -8,7 +8,7 @@ var rimraf = require('rimraf');
 var conf =  {
     repoUser: 'sourcejs',
     repoSource: 'Source',
-    repoSourceBranch: 'v.0.4.0',
+    repoSourceBranch: 'master',
     repoInit: 'init'
 };
 
