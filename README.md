@@ -1,6 +1,8 @@
-# Yeoman generator for SourceJS
+# [beta] Yeoman generator for SourceJS
+
+For SourceJS initialization.
 
 ```
 npm i -g generator-sourcejs
-yo sourcejs init
+yo sourcejs
 ```

@@ -12,7 +12,7 @@ var conf =  {
     repoInit: 'init'
 };
 
-//TODO: add check if already inited
+//TODO: add check if already inited, create project in new folder
 
 var SourcejsGenerator = yeoman.generators.Base.extend({
 
@@ -39,11 +39,11 @@ var SourcejsGenerator = yeoman.generators.Base.extend({
                         {
                             'name': 'Init SourceJS in this folder',
                             'value': 'init'
-                        },
-                        {
-                            'name': 'Create new Spec page',
-                            'value': 'spec'
                         }
+//                        {
+//                            'name': 'Create new Spec page',
+//                            'value': 'spec'
+//                        }
                     ]
                 }
             ];
@@ -94,26 +94,31 @@ SourcejsGenerator.prototype.initSource = function () {
         var _this = this;
 
         this._getSource(function(){
-            _this.waitingDeps = true;
+            _this.depsNeeded = true;
+
             cb();
         });
     }
 };
 
 SourcejsGenerator.prototype.installDeps = function () {
-    if (this.waitingDeps) {
+    if (this.depsNeeded) {
         var cb = this.async();
         var _this = this;
 
         this.npmInstall(null, null, function () {
-             _this.watingGrunt = true;
+             _this.gruntNeeded = true;
+
+            // Copy first Spec from docs/stating
+            _this.spawnCommand('cp',['-R','docs/starting','user/specs/starting']);
+
             cb();
         });
     }
 };
 
 SourcejsGenerator.prototype.runGrunt = function () {
-    if (this.watingGrunt) {
+    if (this.gruntNeeded) {
         var cb = this.async();
         var _this = this;
 
