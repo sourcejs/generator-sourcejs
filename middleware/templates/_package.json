@@ -1,0 +1,6 @@
+{
+  "name": "sourcejs-<%= name %>",
+  "version": "0.1.0",
+  <% if (author) { %>"author": "<%= author %>",<% } %>
+  "description": "<%= description %>"
+}

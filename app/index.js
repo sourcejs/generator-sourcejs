@@ -1,5 +1,4 @@
 'use strict';
-var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
@@ -12,10 +11,7 @@ var conf =  {
     repoInit: 'init'
 };
 
-//TODO: add check if already inited, create project in new folder
-
 var SourcejsGenerator = yeoman.generators.Base.extend({
-
     init: function () {
         this.pkg = require('../package.json');
         this.cleanName = this.pkg.name.replace('generator-','');
@@ -39,11 +35,19 @@ var SourcejsGenerator = yeoman.generators.Base.extend({
                         {
                             'name': 'Init SourceJS in this folder',
                             'value': 'init'
+                        },
+                        {
+                            'name': 'Create new Spec page in this folder (recommended path - "sourcejs/user/specs")',
+                            'value': 'spec'
+                        },
+                        {
+                            'name': 'Create new SourceJS Plugin in this folder',
+                            'value': 'plugin'
+                        },
+                        {
+                            'name': 'Create new SourceJS Middleware in this folder',
+                            'value': 'middleware'
                         }
-//                        {
-//                            'name': 'Create new Spec page',
-//                            'value': 'spec'
-//                        }
                     ]
                 }
             ];
@@ -58,6 +62,47 @@ var SourcejsGenerator = yeoman.generators.Base.extend({
         }
     }
 });
+
+
+
+/*
+*
+* Sub-generators
+*
+* */
+
+SourcejsGenerator.prototype.createSpec = function (cb) {
+    if (this.currentAction === 'spec') {
+        cb = typeof cb === 'function' ? cb : function(){};
+
+        this.spawnCommand('yo', ['sourcejs:spec'])
+            .on('close', function (code) {
+                cb();
+            });
+    }
+};
+
+SourcejsGenerator.prototype.createPlugin = function (cb) {
+    if (this.currentAction === 'plugin') {
+        cb = typeof cb === 'function' ? cb : function(){};
+
+        this.spawnCommand('yo', ['sourcejs:plugin'])
+            .on('close', function (code) {
+                cb();
+            });
+    }
+};
+
+SourcejsGenerator.prototype.createMiddleware = function (cb) {
+    if (this.currentAction === 'middleware') {
+        cb = typeof cb === 'function' ? cb : function(){};
+
+        this.spawnCommand('yo', ['sourcejs:middleware'])
+            .on('close', function (code) {
+                cb();
+            });
+    }
+};
 
 
 
@@ -101,6 +146,14 @@ SourcejsGenerator.prototype.initSource = function () {
     }
 };
 
+
+
+/*
+*
+* Lib
+*
+* */
+
 SourcejsGenerator.prototype.installDeps = function () {
     if (this.depsNeeded) {
         var cb = this.async();
@@ -132,12 +185,19 @@ SourcejsGenerator.prototype.runGrunt = function () {
     }
 };
 
-// Silent methods
+
+
+/*
+*
+* Util methods
+*
+* */
+
 SourcejsGenerator.prototype._getSource = function (cb) {
     var _this = this;
 
     this.log.writeln('Cloning SourceJS');
-    this.spawnCommand('git',['clone','-b',conf.repoSourceBranch,'https://github.com/'+conf.repoUser+'/'+conf.repoSource, '.'])
+    this.spawnCommand('git',['clone','-b', conf.repoSourceBranch, 'https://github.com/'+conf.repoUser+'/'+conf.repoSource, '.'])
         .on('close', function (code) {
             if (code === 0) {
                 _this._getSourceInit(function(){
@@ -147,10 +207,6 @@ SourcejsGenerator.prototype._getSource = function (cb) {
                 _this.log.writeln('Error cloning repo');
             }
         });
-};
-
-SourcejsGenerator.prototype._serve = function (cb) {
-    this.spawnCommand('node', ['app']);
 };
 
 SourcejsGenerator.prototype._getSourceInit = function (cb) {
@@ -167,20 +223,8 @@ SourcejsGenerator.prototype._getSourceInit = function (cb) {
     });
 };
 
-
-
-/*
-*
-* Create spec
-*
-* */
-
-SourcejsGenerator.prototype.createSpec = function (cb) {
-    if (this.currentAction === 'spec') {
-        console.log('Spec creation isn\'t supported yet');
-    }
+SourcejsGenerator.prototype._serve = function (cb) {
+    this.spawnCommand('node', ['app']);
 };
-
-
 
 module.exports = SourcejsGenerator;
