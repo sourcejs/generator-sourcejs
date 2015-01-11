@@ -1,6 +1,6 @@
 # Yeoman generator for SourceJS
 
-For SourceJS initialization, bootstraping new Specs, plugins and other platform related items.
+For [SourceJS](http://sourcejs.com) initialization, bootstraping new Specs, plugins and other platform related items.
 
 ```
 npm i -g yo grunt-cli generator-sourcejs
