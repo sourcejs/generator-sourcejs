@@ -1,6 +1,6 @@
 {
   "name": "generator-sourcejs",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Yeoman generator for SourceJS http://sourcejs.com",
   "license": "MIT",
   "main": "app/index.js",
@@ -13,9 +13,6 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "files": [
-    "app"
-  ],
   "keywords": [
     "yeoman-generator",
     "sourcejs"
