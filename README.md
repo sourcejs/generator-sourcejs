@@ -1,5 +1,7 @@
 # Yeoman generator for SourceJS
 
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
+
 For [SourceJS](http://sourcejs.com) initialization, bootstraping new Specs, plugins and other platform related items.
 
 ```
