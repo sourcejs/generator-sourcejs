@@ -37,15 +37,15 @@ var SourcejsGenerator = yeoman.generators.Base.extend({
                             'value': 'init'
                         },
                         {
-                            'name': 'Create new Spec page in this folder (recommended path - "sourcejs/user/specs")',
+                            'name': 'Create Spec in new folder',
                             'value': 'spec'
                         },
                         {
-                            'name': 'Create new SourceJS Plugin in this folder',
+                            'name': 'Create SourceJS Plugin in new folder',
                             'value': 'plugin'
                         },
                         {
-                            'name': 'Create new SourceJS Middleware in this folder',
+                            'name': 'Create SourceJS Middleware in new folder',
                             'value': 'middleware'
                         }
                     ]
@@ -135,13 +135,13 @@ SourcejsGenerator.prototype.askForServe = function (cb) {
 
 SourcejsGenerator.prototype.initSource = function () {
     if (this.currentAction === 'init') {
-        var cb = this.async();
+        var done = this.async();
         var _this = this;
 
         this._getSource(function(){
             _this.depsNeeded = true;
 
-            cb();
+            done();
         });
     }
 };
