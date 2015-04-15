@@ -47,7 +47,7 @@ var SpecGenerator = yeoman.generators.Base.extend({
     },
 
     app: function () {
-        this.template('_index.src', path.join(this.name, 'index.src'));
+        this.template('_index.src.html', path.join(this.name, 'index.src.html'));
         this.template('_info.json', path.join(this.name, 'info.json'));
     }
 });
