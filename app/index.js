@@ -8,7 +8,8 @@ var conf =  {
     repoUser: 'sourcejs',
     repoSource: 'Source',
     repoSourceBranch: 'master',
-    repoInit: 'init'
+    repoInit: 'init',
+    repoInitBranch: 'master'
 };
 
 var SourcejsGenerator = yeoman.generators.Base.extend({
@@ -156,35 +157,21 @@ SourcejsGenerator.prototype.initSource = function () {
 
 SourcejsGenerator.prototype.installDeps = function () {
     if (this.depsNeeded) {
-        var cb = this.async();
+        var done = this.async();
         var _this = this;
 
         this.npmInstall(null, null, function () {
-             _this.gruntNeeded = true;
-
             // Copy first Spec from docs/stating
             _this.spawnCommand('cp',['-R','docs/starting','user/specs/starting']);
 
-            cb();
-        });
-    }
-};
-
-SourcejsGenerator.prototype.runGrunt = function () {
-    if (this.gruntNeeded) {
-        var cb = this.async();
-        var _this = this;
-
-        this.spawnCommand('grunt', ['update']).on('close', function () {
             if(_this.runSource) {
                 _this._serve();
 
-                cb();
+                done();
             }
         });
     }
 };
-
 
 
 /*
@@ -216,14 +203,14 @@ SourcejsGenerator.prototype._getSourceInit = function (cb) {
     this.log.writeln('Cleaning cache for github repo:' + conf.repoInit);
     rimraf.sync(path.join(this.cacheRoot(), this.cleanName, conf.repoInit));
 
-    this.remote(conf.repoUser, conf.repoInit, function (err, remote) {
+    this.remote(conf.repoUser, conf.repoInit, conf.repoInitBranch, function (err, remote) {
         remote.directory('.', 'user');
 
         if (typeof cb === 'function') cb();
     });
 };
 
-SourcejsGenerator.prototype._serve = function (cb) {
+SourcejsGenerator.prototype._serve = function () {
     this.spawnCommand('node', ['app']);
 };
 
