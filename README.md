@@ -2,7 +2,7 @@
 
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
 
-For [SourceJS](http://sourcejs.com) initialization, bootstraping new Specs, plugins and other platform related items.
+For [SourceJS](http://sourcejs.com) initialization, bootstraping new Specs, plugins and other platform related items. Soon will be replaced by `sourcejs-cli` ([source#144](https://github.com/sourcejs/Source/issues/144)).
 
 ```
 npm i -g yo grunt-cli generator-sourcejs
