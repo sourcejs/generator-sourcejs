@@ -7,9 +7,9 @@ var rimraf = require('rimraf');
 var conf =  {
     repoUser: 'sourcejs',
     repoSource: 'Source',
-    repoSourceBranch: '0.5.3-rc',
+    repoSourceBranch: 'master',
     repoInit: 'init',
-    repoInitBranch: '0.5.3-dev'
+    repoInitBranch: 'master'
 };
 
 var SourcejsGenerator = yeoman.generators.Base.extend({
