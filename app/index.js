@@ -6,14 +6,21 @@ var rimraf = require('rimraf');
 
 var conf =  {
     repoUser: 'sourcejs',
-    repoSource: 'Source',
-    repoSourceBranch: 'master',
-    repoInit: 'init',
-    repoInitBranch: 'master'
+    repo: 'Source',
+    branch: 'master',
+    initRepo: 'init',
+    initBranch: 'master'
 };
 
 var SourcejsGenerator = yeoman.generators.Base.extend({
     init: function () {
+        this.option('repo', { type: 'String'});
+        this.option('branch', { type: 'String'});
+        this.option('repo-user', { type: 'String'});
+
+        this.option('init-repo', { type: 'String'});
+        this.option('init-branch', { type: 'String'});
+
         this.pkg = require('../package.json');
         this.cleanName = this.pkg.name.replace('generator-','');
 
@@ -24,7 +31,15 @@ var SourcejsGenerator = yeoman.generators.Base.extend({
     },
 
     actionList: function () {
-        if (this.arguments.length === 0) {
+        this.noOptions = !(
+            this.options.repo ||
+            this.options.branch ||
+            this.options['repo-user'] ||
+            this.options['init-repo'] ||
+            this.options['init-branch']
+        );
+
+        if (this.arguments.length === 0 && this.noOptions) {
             var done = this.async();
 
             var prompts = [
@@ -60,6 +75,8 @@ var SourcejsGenerator = yeoman.generators.Base.extend({
 
                 done();
             }.bind(this));
+        } else {
+            this.currentAction = this.currentAction || 'init';
         }
     }
 });
@@ -182,9 +199,16 @@ SourcejsGenerator.prototype.installDeps = function () {
 
 SourcejsGenerator.prototype._getSource = function (cb) {
     var _this = this;
+    var repo = this.options.repo || conf.repo;
+    var branch = this.options.branch || conf.branch;
+    var user = this.options['repo-user'] || conf.repoUser;
 
-    this.log.writeln('Cloning SourceJS');
-    this.spawnCommand('git',['clone','-b', conf.repoSourceBranch, 'https://github.com/'+conf.repoUser+'/'+conf.repoSource, '.'])
+    var url = 'https://github.com/'+ user +'/'+ repo;
+
+    this.log.writeln('Cloning SourceJS from '+ url +' at branch '+ branch);
+    this.spawnCommand('git',[
+        'clone','-b', branch, url, '.'
+    ])
         .on('close', function (code) {
             if (code === 0) {
                 _this._getSourceInit(function(){
@@ -197,13 +221,17 @@ SourcejsGenerator.prototype._getSource = function (cb) {
 };
 
 SourcejsGenerator.prototype._getSourceInit = function (cb) {
-    var _this = this;
+    var repo = this.options['init-repo'] || conf.initRepo;
+    var branch = this.options['init-branch'] || conf.initBranch;
+    var user = this.options['repo-user'] || conf.repoUser;
 
     // Removing cache, for clean git clone
-    this.log.writeln('Cleaning cache for github repo:' + conf.repoInit);
-    rimraf.sync(path.join(this.cacheRoot(), this.cleanName, conf.repoInit));
+    rimraf.sync(path.join(this.cacheRoot(), this.cleanName, conf.initRepo));
 
-    this.remote(conf.repoUser, conf.repoInit, conf.repoInitBranch, function (err, remote) {
+    var url = 'https://github.com/'+ user +'/'+ repo;
+
+    this.log.writeln('Cloning SourceJS init from '+ url +' at branch '+ branch);
+    this.remote(user, repo, branch, function (err, remote) {
         remote.directory('.', 'user');
 
         if (typeof cb === 'function') cb();
